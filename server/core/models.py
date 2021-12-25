@@ -17,6 +17,7 @@ class Food(models.Model):
     numReviews = models.IntegerField(null=True, blank=True, default=0)
     price = models.DecimalField(
         max_digits=7, decimal_places=2, null=True, blank=True)
+    countInStock = models.IntegerField(null=True, blank=True, default=0)
     views = models.IntegerField(null=True, blank=True, default=0)
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.UUIDField(default=uuid.uuid4,  unique=True,
@@ -41,7 +42,7 @@ class Review(models.Model):
 
 
 class Menu(models.Model):
-    foods = models.ManyToManyField(Food, on_delete=models.SET_NULL, null=True)
+    foods = models.ManyToManyField(Food, blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     quantity = models.IntegerField(null=True, blank=True, default=0)
     price = models.DecimalField(
