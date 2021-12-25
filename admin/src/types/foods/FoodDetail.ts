@@ -26,7 +26,7 @@ export interface FetchFoodFailureAction {
 	payload: any
 }
 
-export type FoodDetailsAction =
+export type FoodDetailAction =
 	| FetchFoodRequestAction
 	| FetchFoodSuccessAction
 	| FetchFoodFailureAction
