@@ -1,12 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { Alert } from '@mui/material'
 
-enum Variant {
-    error = "error",
-    success = "success",
-    warning = "warning",
-    info = "info"
-}
+type Variant = "error" | "success" | "warning" | "info"
 
 interface MessageProps {
 	children: React.ReactNode
