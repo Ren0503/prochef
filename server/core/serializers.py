@@ -61,7 +61,7 @@ class FoodDetailSerializer(serializers.ModelSerializer):
     def get_reviews(self, obj):
         reviews = obj.review_set.all()
         serializer = ReviewSerializer(reviews, many=True)
-        return serializer.da
+        return serializer.data
 
 
 class MenuSerializer(serializers.ModelSerializer):

@@ -39,8 +39,9 @@ const UserEditScreen = ({
             dispatch({ type: UserUpdateActionTypes.USER_UPDATE_RESET })
             history.push('/users')
         } else {
-            if (!user || user._id !== userId) dispatch(getUserDetail(userId))
-            else {
+            if (!user) {
+                dispatch(getUserDetail(userId))
+            } else {
                 setName(user.name)
                 setEmail(user.email)
                 setIsAdmin(user.isAdmin)

@@ -15,8 +15,10 @@ import {
     Link,
     Button,
     Typography,
+    Grid,
+    Box,
 } from '@mui/material'
-import { Edit, Delete } from '@mui/icons-material'
+import { Edit, Delete, AddCircleOutline } from '@mui/icons-material'
 import { FoodCreateActionTypes } from 'types/foods'
 import { MainLayout } from 'layouts'
 import { StyledTableCell, StyledTableRow } from 'components'
@@ -56,7 +58,7 @@ const FoodListScreen = ({
         if (!userInfo?.isAdmin)
             history.push('/login')
         if (successCreate && createdFood) {
-            history.push(`/food/${createdFood._id}/edit`)
+            history.push(`/foods/${createdFood._id}/edit`)
         } else dispatch(listFoods('', pageNumber))
     }, [
         dispatch,
@@ -113,7 +115,7 @@ const FoodListScreen = ({
                                     </StyledTableCell>
                                     <StyledTableCell>$ {food.price}</StyledTableCell>
                                     <StyledTableCell>
-                                        <Link href={`/food/${food._id}/edit`} onClick={(e) => e.preventDefault}>
+                                        <Link href={`/foods/${food._id}/edit`} onClick={(e) => e.preventDefault}>
                                             <Button variant="contained" color="secondary" href="">
                                                 <Edit />
                                             </Button>
@@ -126,6 +128,17 @@ const FoodListScreen = ({
                             ))}
                         </TableBody>
                     </Table>
+                    <Box sx={{
+                        marginTop: '5px',
+                        position: 'fixed',
+                        bottom: 0,
+                        right: 0,
+                        padding: '5px'
+                    }}>
+                        <Button color="primary" onClick={createFoodHandler}>
+                            <AddCircleOutline fontSize="large" />
+                        </Button>
+                    </Box>
                 </TableContainer>
             )
     }
@@ -133,7 +146,11 @@ const FoodListScreen = ({
     return (
         <MainLayout>
             <Typography>Foods</Typography>
-            {foodsListDisplay()}
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    {foodsListDisplay()}
+                </Grid>
+            </Grid>
         </MainLayout>
     )
 }

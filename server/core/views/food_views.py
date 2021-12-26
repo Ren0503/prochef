@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from core.models import Food, Review, Menu
-from core.serializers import FoodSerializer, FoodDetailSerializer, MenuSerializer
+from core.serializers import FoodSerializer, FoodDetailSerializer, MenuSerializer, ReviewSerializer
 
 from rest_framework import status
 
@@ -175,3 +175,14 @@ def uploadImage(request):
     food.save()
 
     return Response('Image was uploaded')
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getReviews(request):
+    try:
+        reviews = Review.objects.all()
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)
+    except Exception as e:
+        return Response({'details': f"{e}"}, status=status.HTTP_204_NO_CONTENT)

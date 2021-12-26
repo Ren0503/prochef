@@ -55,7 +55,7 @@ const FoodEditScreen = ({
             dispatch({ type: FoodUpdateActionTypes.FOOD_UPDATE_RESET })
             history.push(`/foods`)
         } else {
-            if (!food || food._id !== foodId)
+            if (!food)
                 dispatch(detailFood(foodId))
             else {
                 setName(food.name)
@@ -85,8 +85,10 @@ const FoodEditScreen = ({
 
     const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files![0]
-        const formdata = new FormData()
-        formdata.append('image', file)
+        const formData = new FormData()
+        formData.append('image', file)
+        formData.append('food_id', foodId)
+
         setUploading(true)
         try {
             const config = {
@@ -94,7 +96,7 @@ const FoodEditScreen = ({
                     'Content-Type': 'multipart/form-data'
                 }
             }
-            const { data } = await axios.post('/api/upload', formdata, config)
+            const { data } = await axios.post('/api/foods/upload/', formData, config)
             setImage(data)
             setUploading(false)
         } catch (error) {

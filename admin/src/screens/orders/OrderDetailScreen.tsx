@@ -66,7 +66,7 @@ const OrderDetailScreen = ({
     useEffect(() => {
         if (!userInfo) history.push('/login')
 
-        if (successDeliver || !order || order._id !== orderId) {
+        if (successDeliver || !order) {
             dispatch({ type: OrderDeliverActionTypes.ORDER_DELIVER_RESET })
             dispatch(getOrderDetail(orderId))
         }
