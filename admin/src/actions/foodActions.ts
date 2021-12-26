@@ -46,7 +46,7 @@ export const listFoods = (
 	}
 }
 
-export const listFoodDetail = (id: string): AppThunk => async (
+export const detailFood = (id: string): AppThunk => async (
 	dispatch
 ) => {
 	try {
