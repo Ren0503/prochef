@@ -7,11 +7,8 @@ import { AppDispatch } from 'store'
 import { ReduxState } from 'types/ReduxState'
 import {
     Paper,
-    styled,
     Table,
     TableBody,
-    TableCell,
-    tableCellClasses,
     TableContainer,
     TableHead,
     TableRow,
@@ -21,25 +18,7 @@ import {
 } from '@mui/material'
 import { Edit, Delete } from '@mui/icons-material'
 import { MainLayout } from 'layouts'
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.white,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14
-    },
-}))
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    '&:last-child td, &:last-child th': {
-        border: 0
-    },
-}))
+import { StyledTableCell, StyledTableRow } from 'components'
 
 interface UserListScreenProps extends RouteComponentProps { }
 
