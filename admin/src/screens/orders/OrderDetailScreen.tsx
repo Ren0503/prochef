@@ -48,44 +48,44 @@ const OrderDetailScreen = ({
     },
     history
 }: OrderDetailScreenProps) => {
-    const orderId = id;
-    const [open, setOpen] = useState(true);
-    const [sdkReady, setSdkReady] = useState<boolean>(false);
-    const dispatch = useDispatch<AppDispatch>();
+    const orderId = id
+    const [open, setOpen] = useState(true)
+    const [sdkReady, setSdkReady] = useState<boolean>(false)
+    const dispatch = useDispatch<AppDispatch>()
 
-    const { userInfo } = useSelector((state: ReduxState) => state.userLogin);
+    const { userInfo } = useSelector((state: ReduxState) => state.userLogin)
 
     const { order, loading, error } = useSelector(
         (state: ReduxState) => state.orderDetail
-    );
+    )
 
     const { loading: loadingDeliver, success: successDeliver } = useSelector(
         (state: ReduxState) => state.orderDeliver
-    );
+    )
 
     useEffect(() => {
-        if (!userInfo) history.push('/login');
+        if (!userInfo) history.push('/login')
 
         if (successDeliver || !order || order._id !== orderId) {
-            dispatch({ type: OrderDeliverActionTypes.ORDER_DELIVER_RESET });
-            dispatch(getOrderDetail(orderId));
+            dispatch({ type: OrderDeliverActionTypes.ORDER_DELIVER_RESET })
+            dispatch(getOrderDetail(orderId))
         }
-    }, [dispatch, order, orderId, successDeliver, userInfo, history]);
+    }, [dispatch, order, orderId, successDeliver, userInfo, history])
 
     const deliverHandler = () => {
-        dispatch(deliverOrder(orderId));
-    };
+        dispatch(deliverOrder(orderId))
+    }
 
-    const addDecimals = (num: number) => (Math.round(num * 100) / 100).toFixed(2);
+    const addDecimals = (num: number) => (Math.round(num * 100) / 100).toFixed(2)
  
     const handleClick = () => {
-        setOpen(!open);
-    };
+        setOpen(!open)
+    }
 
     const displayOrderDetail = () => {
-        if (loading) return <Loader />;
+        if (loading) return <Loader />
         else if (error || !order)
-            return <Message variant='error'>{error}</Message>;
+            return <Message variant='error'>{error}</Message>
         else
             return (
                 <Grid container spacing={3}>

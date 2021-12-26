@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { Message, Loader } from 'components'
@@ -23,20 +23,20 @@ import { StyledTableCell, StyledTableRow } from 'components'
 interface OrderListScreenProps extends RouteComponentProps { }
 
 const OrderListScreen = ({ history }: OrderListScreenProps) => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>()
     const { loading, orders, error } = useSelector(
         (state: ReduxState) => state.orderList
-    );
-    const { userInfo } = useSelector((state: ReduxState) => state.userLogin);
+    )
+    const { userInfo } = useSelector((state: ReduxState) => state.userLogin)
 
     useEffect(() => {
-        if (userInfo && userInfo.isAdmin) dispatch(listOrders());
-        else history.push('/login');
-    }, [dispatch, history, userInfo]);
+        if (userInfo && userInfo.isAdmin) dispatch(listOrders())
+        else history.push('/login')
+    }, [dispatch, history, userInfo])
 
     const orderListDisplay = () => {
-        if (loading) return <Loader />;
-        else if (error) return <Message variant='error'>{error}</Message>;
+        if (loading) return <Loader />
+        else if (error) return <Message variant='error'>{error}</Message>
         else
             return (
                 <TableContainer component={Paper}>
