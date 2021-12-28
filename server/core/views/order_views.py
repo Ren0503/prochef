@@ -117,9 +117,23 @@ def updateOrderToPaid(request, pk):
         return Response({'details': f"{e}"}, status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderToCancel(request, pk):
+    try:
+        order = Order.objects.get(_id=pk)
+
+        order.isCanceled = True
+        order.save()
+
+        return Response('Order was cancel')
+    except Exception as e:
+        return Response({'details': f"{e}"}, status=status.HTTP_204_NO_CONTENT)
+
 # ----------------------------
 # Admin
 # ----------------------------
+
 
 @api_view(['GET'])
 @permission_classes([IsAdminUser])

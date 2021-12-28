@@ -1,8 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Food, Order, Menu, Review, OrderItem, ShippingAddress
+from .models import Food, Order, Restaurant, Review, OrderItem, ShippingAddress
 
+
+# ----------------------------
+# User
+# ----------------------------
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -39,9 +43,19 @@ class UserSerializerWithToken(UserSerializer):
         return str(token.access_token)
 
 
+# ----------------------------
+# Food, Review & Restaurant
+# ----------------------------
+
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
+        fields = '__all__'
+
+
+class RestaurantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
         fields = '__all__'
 
 
@@ -51,8 +65,45 @@ class FoodSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# ----------------------------
+# Food, Review & Restaurant Detail
+# ----------------------------
+
+class RestaurantDetailSerializer(serializers.ModelSerializer):
+    foods = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
+
+    def get_foods(self, obj):
+        foods = obj.food_set.all()
+        serializer = FoodSerializer(foods, many=True)
+        return serializer.data
+
+
+class ReviewDetailSerializer(serializers.ModelSerializer):
+    food = serializers.SerializerMethodField(read_only=True)
+    user = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
+
+    def get_food(self, obj):
+        food = obj.food
+        serializer = FoodSerializer(food, many=False)
+        return serializer.data
+
+    def get_user(self, obj):
+        user = obj.user
+        serializer = UserSerializer(user, many=False)
+        return serializer.data
+
+
 class FoodDetailSerializer(serializers.ModelSerializer):
     reviews = serializers.SerializerMethodField(read_only=True)
+    restaurant = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Food
@@ -63,18 +114,14 @@ class FoodDetailSerializer(serializers.ModelSerializer):
         serializer = ReviewSerializer(reviews, many=True)
         return serializer.data
 
-
-class MenuSerializer(serializers.ModelSerializer):
-    foods = FoodSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Menu
-        fields = '__all__'
-
-    def get_foods(self, obj):
-        foods = obj.food_set.all()
-        serializer = FoodSerializer(foods, many=True)
+    def get_restaurant(self, obj):
+        restaurant = obj.restaurant
+        serializer = RestaurantSerializer(restaurant, many=False)
         return serializer.data
+
+# ----------------------------
+# Order
+# ----------------------------
 
 
 class ShippingAddressSerializer(serializers.ModelSerializer):

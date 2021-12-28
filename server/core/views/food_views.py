@@ -5,8 +5,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from core.models import Food, Review, Menu
-from core.serializers import FoodSerializer, FoodDetailSerializer, MenuSerializer, ReviewSerializer
+from core.models import Food, Restaurant, Review
+from core.serializers import FoodSerializer, FoodDetailSerializer, ReviewSerializer
 
 from rest_framework import status
 
@@ -139,12 +139,17 @@ def updateFood(request, pk):
     try:
         data = request.data
         food = Food.objects.get(_id=pk)
+        restaurant_id = data['restaurant_id']
+        restaurant = Restaurant.objects.get(_id=restaurant_id)
 
         food.name = data['name']
         food.price = data['price']
+        food.originalPrice = data['originalPrice']
         food.countInStock = data['countInStock']
         food.category = data['category']
         food.description = data['description']
+        food.salesPrice = data['salesPrice']
+        food.restaurant = restaurant
 
         food.save()
 
@@ -164,6 +169,7 @@ def deleteFood(request, pk):
     except Exception as e:
         return Response({'details': f"{e}"}, status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['POST'])
 def uploadImage(request):
     data = request.data
@@ -175,14 +181,3 @@ def uploadImage(request):
     food.save()
 
     return Response('Image was uploaded')
-
-
-@api_view(['GET'])
-@permission_classes([IsAdminUser])
-def getReviews(request):
-    try:
-        reviews = Review.objects.all()
-        serializer = ReviewSerializer(reviews, many=True)
-        return Response(serializer.data)
-    except Exception as e:
-        return Response({'details': f"{e}"}, status=status.HTTP_204_NO_CONTENT)

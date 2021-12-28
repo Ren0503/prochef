@@ -127,7 +127,7 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'prochef',
+        'NAME': 'shop',
         'USER': 'postgres',
         'PASSWORD': '116105101110',
         'HOST': 'localhost',
